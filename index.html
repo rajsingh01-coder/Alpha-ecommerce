@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Style Login Page</title>
+    
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Loading animation styles */
+.loading-animation {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Update the redirect loading screen */
+#redirectLoading {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.redirect-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #0067b8;
+    margin-bottom: 20px;
+    animation: spin 1s ease-in-out infinite;
+}
+        .over{
+            overflow: hidden;
+        }
+        #app {
+            display: none;
+        }
+        .form {
+            background-color: #ffffff;
+            padding: 24px;
+            width: 352px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form .title {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #333;
+        }
+        .form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form .text {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 16px;
+        }
+        .form .text a {
+            color: #0067B8;
+            text-decoration: none;
+        }
+        .form .text a:hover {
+            text-decoration: underline;
+        }
+        .form .button_row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .form .button {
+            padding: 8px 16px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form .secondary_button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .form .secondary_button:hover {
+            background-color: #e0e0e0;
+        }
+        .form .primary_button {
+            background-color: #0067b8;
+            color: #fff;
+        }
+        .form .primary_button:hover {
+            background-color: #005da6;
+        }
+        #loading, #redirectLoading {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: black; /* Changed to black */
+    color: rgb(244, 36, 36);
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+    /* Media Queries */
+    @media (max-width: 768px) {
+        .form {
+            width: 90%; /* Make form width responsive */
+            padding: 16px; /* Reduce padding */
+        }
+        .form .title {
+            font-size: 1.25rem; /* Adjust title size */
+        }
+        .form input {
+            padding: 6px; /* Adjust input padding */
+            font-size: 0.9rem; /* Adjust input font size */
+        }
+        .form .text {
+            font-size: 0.8rem; /* Adjust text size */
+        }
+        .form .button {
+            padding: 6px 12px; /* Adjust button padding */
+            font-size: 0.9rem; /* Adjust button font size */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form {
+            width: 95%; /* Make form width even more responsive */
+            padding: 12px; /* Further reduce padding */
+        }
+        .form .title {
+            font-size: 1.1rem; /* Further adjust title size */
+        }
+        .form input {
+            padding: 5px; /* Further adjust input padding */
+            font-size: 0.85rem; /* Further adjust input font size */
+        }
+        .form .text {
+            font-size: 0.75rem; /* Further adjust text size */
+        }
+        .form .button {
+            padding: 5px 10px; /* Further adjust button padding */
+            font-size: 0.85rem; /* Further adjust button font size */
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="over">
+    <div id="loading">Loading...</div>
+    <div id="redirectLoading">Redirecting...</div>
+    <div id="app"></div>
+</div>
+
+    <script>
+        const app = document.getElementById("app");
+        const loadingScreen = document.getElementById("loading");
+        const redirectLoadingScreen = document.getElementById("redirectLoading");
+
+        // Simulate initial loading screen
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                loadingScreen.style.display = "none";
+                app.style.display = "block";
+                renderSignInForm();
+            }, 2000);
+        });
+
+        // Render Sign In Form
+        function renderSignInForm() {
+            app.innerHTML = `
+                <div class="form">
+                    <p class="title">Sign In</p>
+                    <input type="text" class="email" placeholder="E-mail, phone, or Skype">
+                    <p class="text">No account? <a href="#" id="createAccount">Create one!</a></p>
+                    <p class="text"><a href="#">Can't access your account?</a></p>
+                    <div class="button_row">
+                        <button class="button secondary_button">Back</button>
+                        <button class="button primary_button" id="signIn">Next</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("createAccount").addEventListener("click", renderCreateAccountForm);
+            document.getElementById("signIn").addEventListener("click", validateSignIn);
+        }
+
+        // Render Create Account Form
+        function renderCreateAccountForm() {
+            app.innerHTML = `
+                <div class="form">
+                    <p class="title">Create Account</p>
+                    <input type="text" class="email" placeholder="E-mail">
+                    <input type="text" class="phone" placeholder="Phone">
+                    <input type="text" class="skype" placeholder="Skype">
+                    <div class="button_row">
+                        <button class="button secondary_button" id="backToSignIn">Back</button>
+                        <button class="button primary_button" id="createAccountBtn">Create</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("backToSignIn").addEventListener("click", renderSignInForm);
+            document.getElementById("createAccountBtn").addEventListener("click", createAccount);
+        }
+
+        // Validate Sign In
+        function validateSignIn() {
+            const input = document.querySelector(".email").value.trim();
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+
+            if (storedUser && (input === storedUser.email || input === storedUser.phone || input === storedUser.skype)) {
+                showRedirectLoading();
+            } else {
+                alert("No match found! Please check your input.");
+            }
+        }
+
+        // Create Account
+        function createAccount() {
+            const email = document.querySelector(".email").value.trim();
+            const phone = document.querySelector(".phone").value.trim();
+            const skype = document.querySelector(".skype").value.trim();
+
+            if (email && phone && skype) {
+                localStorage.setItem("user", JSON.stringify({ email, phone, skype }));
+                alert("Account created successfully!");
+                renderSignInForm();
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+
+        // Show redirect loading screen
+        function showRedirectLoading() {
+            redirectLoadingScreen.style.display = "flex";
+            app.style.display = "none";
+            setTimeout(() => {
+                redirectLoadingScreen.style.display = "none";
+                alert("Welcome to the website!");
+                // Replace the URL with your website URL
+                window.location.href = "file:///C:/Users/rajsi/Downloads/New%20One/website.html";
+            }, 2000);
+        }
+        // Updated validateSignIn function
+function validateSignIn() {
+    const input = document.querySelector(".email").value.trim();
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const signInButton = document.getElementById("signIn");
+    
+    // Show loading spinner on the button
+    signInButton.innerHTML = '<div class="loading-text"><div class="loading-animation"></div> Processing...</div>';
+    signInButton.disabled = true;
+    
+    // Simulate loading for 1.5 seconds
+    setTimeout(() => {
+        if (storedUser && (input === storedUser.email || input === storedUser.skype)) {
+            showRedirectLoading();
+        } else {
+            // Reset button if login fails
+            signInButton.innerHTML = 'Next';
+            signInButton.disabled = false;
+            alert("No match found! Please check your input.");
+        }
+    }, 1500);
+}
+
+// Updated showRedirectLoading function
+function showRedirectLoading() {
+    // Create a nicer loading screen
+    redirectLoadingScreen.innerHTML = `
+        <div class="redirect-spinner"></div>
+        <div>Redirecting to your account...</div>
+    `;
+    redirectLoadingScreen.style.display = "flex";
+    app.style.display = "none";
+    
+    // Redirect after 3 seconds
+    setTimeout(() => {
+        redirectLoadingScreen.style.display = "none";
+        alert("Welcome to the website!");
+        window.location.href = "file:///C:/Users/rajsi/Downloads/New%20One/website.html";
+    }, 3000);
+}
+    </script>
+</body>
+</html>

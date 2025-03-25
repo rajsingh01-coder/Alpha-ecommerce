@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Account Portal</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --primary-light: #a29bfe;
+            --secondary: #00cec9;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --error: #d63031;
+            --text-light: #f5f6fa;
+            --text-dark: #2d3436;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--secondary), transparent);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: rgba(245, 246, 250, 0.8);
+            padding-right: 45px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            background: white;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #636e72;
+            transition: all 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(108, 92, 231, 0.1);
+            box-shadow: none;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert-success {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .alert-error {
+            background: rgba(214, 48, 49, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            margin: -60px auto 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-text {
+            margin-bottom: 30px;
+        }
+
+        .welcome-text h2 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .welcome-text p {
+            color: #636e72;
+            font-size: 14px;
+        }
+
+        .dashboard-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .menu-item {
+            padding: 20px 15px;
+            background: var(--light);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .menu-item i {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .menu-item:hover i {
+            color: white;
+        }
+
+        .menu-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            color: #636e72;
+            font-size: 14px;
+        }
+
+        .toggle-link {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .card {
+                border-radius: 15px;
+            }
+            
+            .card-header {
+                padding: 25px 20px;
+            }
+            
+            .card-body {
+                padding: 25px 20px;
+            }
+            
+            .dashboard-menu {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 13px;
+            }
+        }
+
+        /* Floating animation for dashboard elements */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="card floating">
+        <!-- Authentication Forms -->
+        <div id="authForms">
+            <div class="card-header">
+                <h1 id="formTitle">Welcome Back</h1>
+                <p id="formSubtitle">Sign in to access your account</p>
+            </div>
+            
+            <div class="card-body">
+                <div id="alert" class="alert hidden"></div>
+                
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                            <i class="fas fa-lock input-icon"></i>
+                            <span class="password-toggle" id="togglePassword">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group hidden" id="profilePicGroup">
+                        <label for="profilePic">Profile Picture URL</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="profilePic" class="form-control" placeholder="https://example.com/photo.jpg">
+                            <i class="fas fa-image input-icon"></i>
+                        </div>
+                        <small class="text-muted">Leave blank for default avatar</small>
+                    </div>
+                   
+              
+                    <button type="submit" class="btn" id="submitBtn">
+                        <a href="user2.html">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </a>
+                    </button>
+               
+                    
+                    <button type="button" class="btn btn-secondary" id="toggleModeBtn">
+                        <i class="fas fa-user-plus"></i> Create New Account
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Dashboard -->
+        <div id="dashboard" class="hidden">
+            <div class="card-header">
+                <img id="dashboardProfilePic" class="avatar" src="https://via.placeholder.com/120" alt="Profile Picture">
+                <h1 id="dashboardUsername">User Dashboard</h1>
+            </div>
+            
+            <div class="card-body">
+                <div class="welcome-text">
+                    <h2 id="welcomeMessage">Hello, User!</h2>
+                    <p>Manage your account and preferences</p>
+                </div>
+                
+                <div class="dashboard-menu">
+                    <div class="menu-item">
+                        <i class="fas fa-history"></i>
+                        <span>Order History</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Wishlist</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-address-book"></i>
+                        <span>Address Book</span>
+                    </div>
+                </div>
+                
+                <button id="logoutButton" class="btn">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const authForm = document.getElementById("authForm");
+        const alertBox = document.getElementById("alert");
+        const toggleModeBtn = document.getElementById("toggleModeBtn");
+        const formTitle = document.getElementById("formTitle");
+        const formSubtitle = document.getElementById("formSubtitle");
+        const submitBtn = document.getElementById("submitBtn");
+        const dashboard = document.getElementById("dashboard");
+        const authForms = document.getElementById("authForms");
+        const logoutButton = document.getElementById("logoutButton");
+        const profilePicGroup = document.getElementById("profilePicGroup");
+        const dashboardProfilePic = document.getElementById("dashboardProfilePic");
+        const dashboardUsername = document.getElementById("dashboardUsername");
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("password");
+
+        let isRegister = false;
+
+        // Toggle password visibility
+        togglePassword.addEventListener("click", function() {
+            const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+            passwordField.setAttribute("type", type);
+            this.innerHTML = type === "password" ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
+        });
+
+        // Toggle between login and register
+        toggleModeBtn.addEventListener("click", toggleAuthMode);
+
+        function toggleAuthMode() {
+            isRegister = !isRegister;
+            
+            if (isRegister) {
+                formTitle.textContent = "Join Us Today";
+                formSubtitle.textContent = "Create your account in seconds";
+                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
+                toggleModeBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Already have an account? Sign In';
+                profilePicGroup.classList.remove("hidden");
+            } else {
+                formTitle.textContent = "Welcome Back";
+                formSubtitle.textContent = "Sign in to access your account";
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                toggleModeBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create New Account';
+                profilePicGroup.classList.add("hidden");
+            }
+            
+            // Clear form and hide alert
+            authForm.reset();
+            alertBox.classList.add("hidden");
+        }
+
+        // Form submission
+        authForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const profilePic = document.getElementById("profilePic").value.trim();
+
+            if (isRegister) {
+                handleRegistration(username, password, profilePic);
+            } else {
+                handleLogin(username, password);
+            }
+        });
+
+        function handleRegistration(username, password, profilePic) {
+            if (username.length < 4) {
+                showAlert("Username must be at least 4 characters", "error");
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert("Password must be at least 6 characters", "error");
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const userExists = users.some(user => user.username === username);
+
+            if (userExists) {
+                showAlert("Username already exists. Please choose another.", "error");
+            } else {
+                users.push({ 
+                    username, 
+                    password, 
+                    profilePic: profilePic || "https://i.pravatar.cc/150?img=3" 
+                });
+                localStorage.setItem("users", JSON.stringify(users));
+                showAlert("🎉 Registration successful! Please sign in.", "success");
+                toggleAuthMode(); // Switch back to login
+            }
+        }
+
+        function handleLogin(username, password) {
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                showDashboard(user);
+            } else {
+                showAlert("🔐 Invalid username or password. Please try again.", "error");
+            }
+        }
+
+        // Logout functionality
+        logoutButton.addEventListener("click", () => {
+            authForms.classList.remove("hidden");
+            dashboard.classList.add("hidden");
+            authForm.reset();
+            
+            // Add logout animation
+            const card = document.querySelector(".card");
+            card.style.animation = "none";
+            void card.offsetWidth; // Trigger reflow
+            card.style.animation = "fadeIn 0.5s ease-out";
+        });
+
+        // Show alert message
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.classList.remove("hidden");
+            
+            // Add emoji animation
+            if (type === "success") {
+                alertBox.style.animation = "fadeIn 0.5s, bounce 0.5s";
+            }
+            
+            setTimeout(() => {
+                alertBox.classList.add("hidden");
+            }, 3000);
+        }
+
+        // Show dashboard
+        function showDashboard(user) {
+            authForms.classList.add("hidden");
+            dashboard.classList.remove("hidden");
+            dashboardProfilePic.src = user.profilePic;
+            dashboardUsername.textContent = user.username;
+            welcomeMessage.textContent = `Welcome back, ${user.username}!`;
+            
+            // Add entrance animation
+            const card = document.querySelector(".card");
+            card.style.animation = "none";
+            void card.offsetWidth; // Trigger reflow
+            card.style.animation = "fadeIn 0.5s ease-out, float 6s ease-in-out infinite";
+        }
+    </script>
+</body>
+</html>

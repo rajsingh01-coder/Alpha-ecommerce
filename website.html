@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%230067b8'>A</text></svg>">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha-Ecommerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="cookie-consent" id="cookieConsent" style="display: none;">
+        <p>We use cookies to ensure you get the best experience on our website. 
+           <a href="#" id="cookiePolicyLink">Learn more</a> about our cookie policy.</p>
+        <div class="cookie-consent-buttons">
+            <button class="cookie-consent-button cookie-consent-decline" id="declineCookies">Decline</button>
+            <button class="cookie-consent-button cookie-consent-accept" id="acceptCookies">Accept</button>
+        </div>
+    </div>
+    <div class="over" id="home">
+    <header>
+      
+        <div class="menu-toggle">☰</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#shop">Shop</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+            <a href="#blog">Blog</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="icons">
+            <i class="shopping-cart">🛒</i>
+            <a href="user.html">
+            <i class="user-account">👤</i>
+        </a>
+        </div>
+    </header>
+
+
+    <div class="product-page">
+        <div class="product-gallery">
+            <img src="1.webp" alt="Main Product Image" id="main-image">
+            <div class="thumbnails">
+               
+            </div>
+        </div>
+        <div class="product-info">
+            <div class="product-title">Product Name</div>
+            <div class="price" id="price" data-price="199.99">$199.99</div>
+            <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel orci quis odio consequat sodales.</div>
+            <div class="specifications">Specifications: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <div class="quantity-selector">
+                <button onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity" value="1" min="1">
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+            <div class="buttons">
+                <button class="add-to-cart" onclick="addToCart()">Add to Cart</button>
+                <button class="wishlist" onclick="addToWishlist()">Add to Wishlist</button>
+            </div>
+        </div>
+    <div class="reviews">
+        <h3>Customer Reviews</h3>
+        <div class="review">
+            <img src="coustmer.jpeg" alt="Reviewer 1">
+            <div class="review-content">
+                <div class="reviewer-name">John Doe</div>
+                <div class="review-date">March 1, 2025</div>
+                <div class="review-text">Excellent product! Highly recommend to everyone looking for quality.</div>
+            </div>
+        </div>
+        <div class="review">
+            <img src="user.avif" alt="Reviewer 2">
+            <div class="review-content">
+                <div class="reviewer-name">Jane Smith</div>
+                <div class="review-date">March 15, 2025</div>
+                <div class="review-text">Great value for money. Customer service was also very helpful.</div>
+            </div>
+        </div>
+        <div class="review">
+            <img src="profile.avif" alt="Reviewer 3">
+            <div class="review-content">
+                <div class="reviewer-name">Alex Brown</div>
+                <div class="review-date">March 20, 2025</div>
+                <div class="review-text">Absolutely love it! Will purchase again in the future.</div>
+            </div>
+        </div>
+    </div>
+    <div class="related-products">
+        <h3>Related Products</h3>
+        <div class="product">
+            <img src="5.webp" alt="Related Product 1">
+            <p>Product 1</p>
+        </div>
+        <div class="product">
+            <img src="6.avif" alt="Related Product 2">
+            <p>Product 2</p>
+        </div>
+        <div class="product">
+            <img src="7.avif" alt="Related Product 3">
+            <p>Product 3</p>
+        </div>
+    </div>
+
+
+    <div class="category-container" id="shop">
+        <h1 class="category-title">Women's Shoes</h1>
+        
+        <div class="controls-container">
+            <div class="filter-section">
+                <button class="mobile-filter-toggle" id="filterToggle">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+                <div class="filters" id="filters">
+                    <div class="filter-group">
+                        <h3><i class="fas fa-tag"></i> Price</h3>
+                        <div class="price-range">
+                            <input type="range" id="priceRange" min="0" max="500" step="10" value="500">
+                            <div class="price-values">
+                                <span>$0</span>
+                                <span>$<span id="priceValue">500</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3><i class="fas fa-ruler"></i> Size</h3>
+                        <div class="size-options">
+                            <label><input type="checkbox" name="size" value="5"> 5</label>
+                            <label><input type="checkbox" name="size" value="6"> 6</label>
+                            <label><input type="checkbox" name="size" value="7"> 7</label>
+                            <label><input type="checkbox" name="size" value="8"> 8</label>
+                            <label><input type="checkbox" name="size" value="9"> 9</label>
+                            <label><input type="checkbox" name="size" value="10"> 10</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3><i class="fas fa-palette"></i> Color</h3>
+                        <div class="color-options">
+                            <label><input type="checkbox" name="color" value="black"> Black</label>
+                            <label><input type="checkbox" name="color" value="white"> White</label>
+                            <label><input type="checkbox" name="color" value="red"> Red</label>
+                            <label><input type="checkbox" name="color" value="blue"> Blue</label>
+                            <label><input type="checkbox" name="color" value="green"> Green</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="apply-filters" id="applyFilters">Apply Filters</button>
+                        <button class="reset-filters" id="resetFilters">Reset All</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sort-section">
+                <label for="sortOptions">Sort by:</label>
+                <select id="sortOptions">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-asc">Name: A-Z</option>
+                    <option value="name-desc">Name: Z-A</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Purchase Popup -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="purchase-popup">
+            <button class="close-popup" id="closePopup">&times;</button>
+            <h2>Complete Your Purchase</h2>
+            <form id="purchaseForm">
+                <div class="form-group">
+                    <label for="productName">Product:</label>
+                    <input type="text" id="productName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Price:</label>
+                    <input type="text" id="productPrice" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerName">Your Name:</label>
+                    <input type="text" id="customerName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email:</label>
+                    <input type="email" id="customerEmail" required placeholder="Enter your email">
+                </div>
+                <button type="submit" class="confirm-purchase">Confirm Purchase</button>
+            </form>
+        </div>
+    </div>
+
+    
+
+
+
+    <div class="checkout-container">
+        <h1>Checkout</h1>
+        
+        <div class="checkout-steps">
+            <div class="step active">1. Billing</div>
+            <div class="step">2. Shipping</div>
+            <div class="step">3. Payment</div>
+            <div class="step">4. Review</div>
+        </div>
+        
+        <div class="checkout-content">
+            <div class="forms-section">
+                <!-- Billing Information Form -->
+                <form id="billingForm" class="checkout-form active">
+                    <h2>Billing Information</h2>
+                    <div class="form-group">
+                        <label for="billingFirstName">First Name*</label>
+                        <input type="text" id="billingFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingLastName">Last Name*</label>
+                        <input type="text" id="billingLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingEmail">Email*</label>
+                        <input type="email" id="billingEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingPhone">Phone*</label>
+                        <input type="tel" id="billingPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingAddress">Address*</label>
+                        <input type="text" id="billingAddress" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="billingCity">City*</label>
+                            <input type="text" id="billingCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="billingZip">Zip Code*</label>
+                            <input type="text" id="billingZip" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingCountry">Country*</label>
+                        <select id="billingCountry" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="sameAsShipping">
+                        <label for="sameAsShipping">Shipping address same as billing</label>
+                    </div>
+                    <button type="button" class="btn-next" onclick="nextStep('billingForm', 'shippingForm')">Continue to Shipping</button>
+                </form>
+
+                <!-- Shipping Information Form -->
+                <form id="shippingForm" class="checkout-form">
+                    <h2>Shipping Information</h2>
+                    <div class="form-group">
+                        <label for="shippingFirstName">First Name*</label>
+                        <input type="text" id="shippingFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingLastName">Last Name*</label>
+                        <input type="text" id="shippingLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingAddress">Address*</label>
+                        <input type="text" id="shippingAddress" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shippingCity">City*</label>
+                            <input type="text" id="shippingCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingZip">Zip Code*</label>
+                            <input type="text" id="shippingZip" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingCountry">Country*</label>
+                        <select id="shippingCountry" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingMethod">Shipping Method*</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="shippingMethod" value="standard" checked> 
+                                Standard Shipping (3-5 business days) - $5.99
+                            </label>
+                            <label>
+                                <input type="radio" name="shippingMethod" value="express"> 
+                                Express Shipping (1-2 business days) - $12.99
+                            </label>
+                            <label>
+                                <input type="radio" name="shippingMethod" value="free"> 
+                                Free Shipping (5-7 business days) - $0.00
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn-back" onclick="prevStep('shippingForm', 'billingForm')">Back</button>
+                        <button type="button" class="btn-next" onclick="nextStep('shippingForm', 'paymentForm')">Continue to Payment</button>
+                    </div>
+                </form>
+
+                <!-- Payment Information Form -->
+                <form id="paymentForm" class="checkout-form">
+                    <h2>Payment Information</h2>
+                    <div class="form-group">
+                        <label>Payment Method*</label>
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="credit">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-amex"></i>
+                                <span>Credit Card</span>
+                            </div>
+                            <div class="payment-method" data-method="paypal">
+                                <i class="fab fa-cc-paypal"></i>
+                                <span>PayPal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Form -->
+                    <div id="creditCardForm" class="payment-form">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number*</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardName">Name on Card*</label>
+                            <input type="text" id="cardName">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cardExpiry">Expiry Date*</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardCvv">CVV*</label>
+                                <input type="text" id="cardCvv" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PayPal Form (hidden by default) -->
+                    <div id="paypalForm" class="payment-form" style="display: none;">
+                        <div class="paypal-info">
+                            <p>You will be redirected to PayPal to complete your payment securely.</p>
+                            <button type="button" class="btn-paypal">
+                                <i class="fab fa-paypal"></i> Pay with PayPal
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-back" onclick="prevStep('paymentForm', 'shippingForm')">Back</button>
+                        <button type="button" class="btn-next" onclick="nextStep('paymentForm', 'reviewForm')">Review Order</button>
+                    </div>
+                </form>
+
+                <!-- Review Order Form -->
+                <form id="reviewForm" class="checkout-form">
+                    <h2>Review Your Order</h2>
+                    <div class="review-section">
+                        <h3>Billing Information</h3>
+                        <div id="reviewBilling"></div>
+                    </div>
+                    <div class="review-section">
+                        <h3>Shipping Information</h3>
+                        <div id="reviewShipping"></div>
+                    </div>
+                    <div class="review-section">
+                        <h3>Payment Method</h3>
+                        <div id="reviewPayment"></div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn-back" onclick="prevStep('reviewForm', 'paymentForm')">Back</button>
+                        <button type="button" class="btn-place-order" onclick="placeOrder()">Place Order</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-items">
+                    <div class="summary-item">
+                        <div class="item-image">
+                            <img src="10.avif" alt="Product">
+                        </div>
+                        <div class="item-details">
+                            <h4>Product Name</h4>
+                            <p>Color: Black, Size: M</p>
+                            <p>Qty: 1</p>
+                        </div>
+                        <div class="item-price">$49.99</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="item-image">
+                            <img src="8.avif" alt="Product">
+                        </div>
+                        <div class="item-details">
+                            <h4>Another Product</h4>
+                            <p>Color: Blue, Size: L</p>
+                            <p>Qty: 2</p>
+                        </div>
+                        <div class="item-price">$59.98</div>
+                    </div>
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$109.97</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shippingCost">$5.99</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax</span>
+                        <span id="tax">$8.80</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">$124.76</span>
+                    </div>
+                </div>
+                <div class="coupon-section">
+                    <input type="text" id="couponCode" placeholder="Coupon Code">
+                    <button type="button" onclick="applyCoupon()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<main id="about">
+    <section id="company-info" class="section" >
+        <h2>Company Information</h2>
+        <div id="company-content" class="content"></div>
+    </section>
+    
+    <section id="mission" class="section">
+        <h2>Our Mission</h2>
+        <div id="mission-content" class="content"></div>
+    </section>
+    
+    <section id="team" class="section">
+        <h2>Meet Our Team</h2>
+        <div id="team-content" class="content team-grid"></div>
+    </section>
+</main>
+
+
+<main id="contact">
+    <section id="contact-info" class="section">
+        <div class="contact-container">
+            <div class="contact-details">
+                <h2>Our Contact Information</h2>
+                <div class="contact-method">
+                    <i class="icon">📧</i>
+                    <div>
+                        <h3>Email</h3>
+                        <p><a href="mailto:info@company.com">info@company.com</a></p>
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <i class="icon">📞</i>
+                    <div>
+                        <h3>Phone</h3>
+                        <p><a href="tel:+1234567890">+1 (234) 567-890</a></p>
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <i class="icon">🏢</i>
+                    <div>
+                        <h3>Address</h3>
+                        <p>123 Business Street<br>San Francisco, CA 94107<br>United States</p>
+                    </div>
+                </div>
+                <div class="business-hours">
+                    <h3>Business Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                    <p>Saturday - Sunday: Closed</p>
+                </div>
+            </div>
+            
+            <div class="contact-form-container">
+                <h2>Send Us a Message</h2>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone (optional)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="" disabled selected>Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="sales">Sales Question</option>
+                            <option value="feedback">Feedback</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <form id="contactForm">
+                        <!-- form fields -->
+                        <button type="submit" class="submit-btn">Send Message</button>
+                      </form>
+                      
+                </form>
+                <div id="formMessage" class="form-message"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="map-section" class="section">
+        <h2>Our Location</h2>
+        <div id="map"></div>
+    </section>
+</main>
+
+
+
+   
+<div class="blog-container" id="blog">
+    <aside class="sidebar">
+        <div class="search-box">
+            <input type="text" placeholder="Search articles...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="categories">
+            <h3>Categories</h3>
+            <ul>
+                <li class="active" data-category="all">All Articles</li>
+                <li data-category="product-guides">Product Guides</li>
+                <li data-category="tips-tricks">Tips & Tricks</li>
+                <li data-category="industry-news">Industry News</li>
+            </ul>
+        </div>
+        
+        <div class="popular-posts">
+            <h3>Popular Posts</h3>
+            <div class="popular-post">
+                <img src="blog2.webp" alt="Popular post">
+                <div>
+                    <h4>Getting Started with Our Platform</h4>
+                    <span class="date">May 15, 2023</span>
+                </div>
+            </div>
+            <div class="popular-post">
+                <img src="blog3.webp" alt="Popular post">
+                <div>
+                    <h4>Top 10 Productivity Tips</h4>
+                    <span class="date">April 28, 2023</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="newsletter">
+            <h3>Subscribe to Newsletter</h3>
+            <p>Get the latest updates delivered to your inbox</p>
+            <form id="newsletterForm">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </aside>
+    
+    <main class="content">
+        <div class="filter-tabs">
+            <button class="tab-btn active" data-category="all">All</button>
+            <button class="tab-btn" data-category="product-guides">Product Guides</button>
+            <button class="tab-btn" data-category="tips-tricks">Tips & Tricks</button>
+            <button class="tab-btn" data-category="industry-news">Industry News</button>
+        </div>
+        
+        <div class="articles-grid" id="articlesContainer">
+            <!-- Articles will be loaded here by JavaScript -->
+        </div>
+        
+        <div class="pagination">
+            <button class="pagination-btn" id="prevBtn"><i class="fas fa-chevron-left"></i> Previous</button>
+            <div class="page-numbers" id="pageNumbers"></div>
+            <button class="pagination-btn" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+</div>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- Company Info -->
+        <div class="footer-section company-info">
+            <div class="footer-logo">
+                <h2>ShopEasy</h2>
+                <p>Your one-stop online shopping destination</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-apple-pay"></i>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section quick-links">
+            <h3 class="footer-title">Quick Links</h3>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#">FAQs</a></li>
+            </ul>
+        </div>
+
+        <!-- Customer Service -->
+        <div class="footer-section customer-service">
+            <h3 class="footer-title">Customer Service</h3>
+            <ul>
+                <li><a href="user2.html">My Account</a></li>
+                <li><a href="user2.html">Order Tracking</a></li>
+                <li><a href="user2.html">Wishlist</a></li>
+                <li><a href="user2.html">Shipping Policy</a></li>
+                <li><a href="user2.html">Returns & Refunds</a></li>
+                <li><a href="user2.html">Size Guide</a></li>
+            </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="footer-section contact-info">
+            <h3 class="footer-title">Contact Us</h3>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> 123 Main Street, City, Country</li>
+                <li><i class="fas fa-phone"></i> +1 (234) 567-8900</li>
+                <li><i class="fas fa-envelope"></i> alpha@shopeasy.com</li>
+                <li><i class="fas fa-clock"></i> Mon-Fri: 9AM - 6PM</li>
+            </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="footer-section newsletter">
+            <h3 class="footer-title">Newsletter</h3>
+            <p>Subscribe to get updates on new arrivals and special offers</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <div class="app-download">
+                <p>Download Our App</p>
+                <div class="app-buttons">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p>&copy; 2023 ShopEasy. All Rights Reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+<script src="script.js"></script>
+</body>
+</html>
